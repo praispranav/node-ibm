@@ -1,16 +1,19 @@
+var http = require('http')
+var sentimentAnazyser = require('./routes/sentimentAnzlyser')
+var emotionAnalyzer = require('./routes/emotionAnazyler')
 var express = require("express"),
     app = express();
 
-var port = process.env.PORT || 8080;
 
 app.use(express.static(__dirname + '/public'));
+app.use('/', sentimentAnazyser);
+app.use('/emo', emotionAnalyzer);
 
-app.get("/sayHello", function (request, response) {
-  var user_name = request.query.user_name;
-  response.end("Hello " + user_name + "!");
+const server = http.createServer(app);
+
+server.listen(3000,(err)=>{
+  console.log("server started at port 3000");
+  console.log(err)
 });
 
-app.listen(port);
-console.log("Listening on port ", port);
 
-require("cf-deployment-tracker-client").track();
